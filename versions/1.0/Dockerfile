@@ -23,5 +23,7 @@ RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip \
 
     && apk del --purge -r build-dependencies
 
+EXPOSE 2000
+
 ENTRYPOINT ["xray"]
-CMD ["--bind", "0.0.0.0:3000", "--log-file", "/var/log/xray-daemon.log", "--memory-limit", "100"]
+CMD ["--bind", "0.0.0.0:2000", "--log-file", "/var/log/xray-daemon.log", "--memory-limit", "100"]
