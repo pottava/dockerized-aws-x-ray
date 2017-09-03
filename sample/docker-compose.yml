@@ -1,0 +1,52 @@
+version: "3.3"
+
+services:
+  app:
+    image: pottava/golang:1.9-builder
+    command: go run /go/src/github.com/pottava/dockerized-aws-x-ray/sample/src/main.go
+    ports:
+      - 9000:80
+    environment:
+      - AWS_XRAY_DAEMON_ADDRESS=xray:2000
+      - AWS_REGION
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
+    volumes:
+      - .:/go/src/github.com/pottava/dockerized-aws-x-ray/sample
+    container_name: app
+
+  xray:
+    image: pottava/xray:1.0
+    command: --local-mode --bind 0.0.0.0:2000
+    environment:
+      - AWS_REGION
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+    container_name: xray
+
+  err:
+    image: pottava/http-sw:1.0
+    environment:
+      - ACCESS_LOG=false
+    logging:
+      driver: "none"
+    container_name: err
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
+    logging:
+      driver: "none"
+    container_name: db
+
+volumes:
+  db-data:
