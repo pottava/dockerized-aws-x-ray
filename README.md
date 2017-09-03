@@ -42,7 +42,7 @@ services:
 
 ### ECS
 
-* by AWS CloudFormation:
+* with AWS CloudFormation:
 
 ```
 TaskDef:
@@ -54,11 +54,16 @@ TaskDef:
         PortMappings: 
           - ContainerPort: 80
             HostPort: 0
+        Environment:
+          - Name: AWS_XRAY_DAEMON_ADDRESS
+            Value: xray:2000
+        Links:
+          - xray-daemon:xray
         Cpu: 10
         Memory: 100
         MemoryReservation: 32
         Essential: true
-      - Name: xray
+      - Name: xray-daemon
         Image: pottava/xray:1.0
         Cpu: 10
         Memory: 100
@@ -67,7 +72,7 @@ TaskDef:
     TaskRoleArn: xxxx
 ```
 
-* JSON format:
+* with AWS-CLI (JSON format for register-task-definition)
 
 ```
 [
@@ -81,13 +86,19 @@ TaskDef:
         "hostPort": 0
       }
     ],
+    "environment": [
+      {"name": "AWS_XRAY_DAEMON_ADDRESS", "value": "xray:2000"}
+    ],
+    "links": [
+      "xray-daemon:xray"
+    ],
     "cpu": 10,
     "memory": 100,
     "memoryReservation": 32,
     "essential": true
   },
   {
-    "name": "xray",
+    "name": "xray-daemon",
     "image": "pottava/xray:1.0",
     "cpu": 10,
     "memory": 100,
