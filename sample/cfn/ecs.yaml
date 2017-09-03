@@ -229,11 +229,6 @@ Resources:
     Properties:
         RetentionInDays: 1
 
-  ContainerRepository:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryName: app
-
   SampleCluster:
     Type: AWS::ECS::Cluster
     Properties:
@@ -441,9 +436,9 @@ Outputs:
     Description: An ECS task definition
     Value: !Ref SampleTask
 
-  ContainerRepository:
-    Description: A docker repository
-    Value: !Ref ContainerRepository
+  Service:
+    Description: An ECS service
+    Value: !Ref SampleService
 
   LoadBalancer:
     Description: An endpoint of the ALB

@@ -23,11 +23,13 @@ $ docker run -e AWS_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
 ```
 version: "3"
 services:
+
   app:
     image: <your-some-application>
     ports:
       - 80:80
     container_name: app
+
   xray:
     image: pottava/xray:1.0
     command: --local-mode --bind 0.0.0.0:2000
@@ -36,4 +38,61 @@ services:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
     container_name: xray
+```
+
+### ECS
+
+* by AWS CloudFormation:
+
+```
+TaskDef:
+  Type: AWS::ECS::TaskDefinition
+  Properties:
+    ContainerDefinitions:
+      - Name: app
+        Image: <your-some-application>
+        PortMappings: 
+          - ContainerPort: 80
+            HostPort: 0
+        Cpu: 10
+        Memory: 100
+        MemoryReservation: 32
+        Essential: true
+      - Name: xray
+        Image: pottava/xray:1.0
+        Cpu: 10
+        Memory: 100
+        MemoryReservation: 32
+    Family: xxxx
+    TaskRoleArn: xxxx
+```
+
+* JSON format:
+
+```
+[
+  {
+    "name": "app",
+    "image": "<your-some-application>",
+    "portMappings": [
+      {
+        "protocol": "tcp",
+        "containerPort": 80,
+        "hostPort": 0
+      }
+    ],
+    "cpu": 10,
+    "memory": 100,
+    "memoryReservation": 32,
+    "essential": true
+  },
+  {
+    "name": "xray",
+    "image": "pottava/xray:1.0",
+    "cpu": 10,
+    "memory": 100,
+    "memoryReservation": 32,
+    "essential": false
+  }
+]
 ```
