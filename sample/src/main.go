@@ -6,11 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"golang.org/x/net/context/ctxhttp"
-
-	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -18,11 +14,13 @@ import (
 	_ "github.com/aws/aws-xray-sdk-go/plugins/ec2"
 	_ "github.com/aws/aws-xray-sdk-go/plugins/ecs"
 	"github.com/aws/aws-xray-sdk-go/xray"
+	_ "github.com/go-sql-driver/mysql"
+	"golang.org/x/net/context/ctxhttp"
 
 	"github.com/pottava/dockerized-aws-x-ray/sample/src/lib"
 )
 
-const thisApplicationsName = "myApp"
+const thisApplicationsName = "dev.xray-sample.com"
 
 func main() {
 	xray.Configure(xray.Config{LogLevel: env("AWS_XRAY_LOG_LEVEL", "info")})
@@ -34,8 +32,8 @@ func main() {
 	http.Handle("/delay/", wrap(delay))
 	http.Handle("/mixed/", wrap(mixed))
 
-	log.Printf("[service] listening on port %s", env("PORT", "80"))
-	log.Fatal(http.ListenAndServe(":"+env("PORT", "80"), nil))
+	log.Printf("[service] listening on port %s", env("APP_PORT", "80"))
+	log.Fatal(http.ListenAndServe(":"+env("APP_PORT", "80"), nil))
 }
 
 func env(key, def string) string {
@@ -96,13 +94,16 @@ func httpRequests(w http.ResponseWriter, r *http.Request) {
 	default:
 		result = httpGet(r, "http://err/errors/"+path)
 	}
-	lib.RenderJSON(w, result, nil)
+	fmt.Fprintln(w, result)
 }
 
 func database(w http.ResponseWriter, r *http.Request) {
 	result := ""
 	err := dbConn().QueryRow(r.Context(), "SELECT 1").Scan(&result)
-	lib.RenderJSON(w, result, err)
+	if lib.IsInvalid(w, err) {
+		return
+	}
+	fmt.Fprintln(w, result)
 }
 
 func s3ListFiles(w http.ResponseWriter, r *http.Request) {
@@ -123,7 +124,7 @@ func delay(w http.ResponseWriter, r *http.Request) {
 	if len(duration) == 0 {
 		duration = "100"
 	}
-	lib.RenderJSON(w, httpGet(r, "http://err/sleep/"+duration), nil)
+	fmt.Fprintln(w, httpGet(r, "http://err/sleep/"+duration))
 }
 
 func mixed(w http.ResponseWriter, r *http.Request) {
@@ -137,13 +138,16 @@ func mixed(w http.ResponseWriter, r *http.Request) {
 
 	// List s3 buckets
 	buckets, err := s3Client().ListBucketsWithContext(r.Context(), &s3.ListBucketsInput{})
-	lib.RenderJSON(w, fmt.Sprintf("%s, %s, %v", httpResult, mysqlVersion, buckets), err)
+	if lib.IsInvalid(w, err) {
+		return
+	}
+	fmt.Fprintf(w, "%s, %s, %v", httpResult, mysqlVersion, buckets)
 }
 
 func httpGet(r *http.Request, uri string) string {
 	resp, _ := ctxhttp.Get(r.Context(), xray.Client(nil), uri)
 	if json, err := ioutil.ReadAll(resp.Body); err == nil {
-		return string(json)
+		return strings.Trim(string(json), "\n")
 	}
 	return ""
 }

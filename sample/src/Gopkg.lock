@@ -4,14 +4,14 @@
 [[projects]]
   name = "github.com/aws/aws-sdk-go"
   packages = ["aws","aws/awserr","aws/awsutil","aws/client","aws/client/metadata","aws/corehandlers","aws/credentials","aws/credentials/ec2rolecreds","aws/credentials/endpointcreds","aws/credentials/stscreds","aws/defaults","aws/ec2metadata","aws/endpoints","aws/request","aws/session","aws/signer/v4","internal/shareddefaults","private/protocol","private/protocol/query","private/protocol/query/queryutil","private/protocol/rest","private/protocol/restxml","private/protocol/xml/xmlutil","service/s3","service/sts"]
-  revision = "b79a722cb7aba0edd9bd2256361ae2e15e98f8ad"
-  version = "v1.10.36"
+  revision = "2dd0010a66ff968eb03c2507cfb5deab080c5d93"
+  version = "v1.10.37"
 
 [[projects]]
   name = "github.com/aws/aws-xray-sdk-go"
-  packages = ["header","internal/plugins","pattern","plugins/ec2","resources","strategy/ctxmissing","strategy/exception","strategy/sampling","xray"]
-  revision = "7b85b6f470e192d3cd08afe67bf7725378648b2e"
-  version = "v0.9.2"
+  packages = ["header","internal/plugins","pattern","plugins/ec2","plugins/ecs","resources","strategy/ctxmissing","strategy/exception","strategy/sampling","xray"]
+  revision = "0463e6743792aba2c64b8332b694f1a099ac8d8c"
+  version = "v0.9.3"
 
 [[projects]]
   name = "github.com/cihub/seelog"
@@ -30,12 +30,6 @@
   packages = ["."]
   revision = "a0583e0143b1624142adab07e0e97fe106d99561"
   version = "v1.3"
-
-[[projects]]
-  name = "github.com/jinzhu/gorm"
-  packages = ["dialects/mysql"]
-  revision = "5174cc5c242a728b435ea2be8a2f7f998e15429b"
-  version = "v1.0"
 
 [[projects]]
   name = "github.com/jmespath/go-jmespath"
@@ -58,6 +52,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1bb4c9a347619e8344efe9adf7db7197aa753c243bc21f0d48d25b510157a965"
+  inputs-digest = "823d6f05235faa19158aa95e35678eb62709a0e288b9ebf34ac5bb02a5687180"
   solver-name = "gps-cdcl"
   solver-version = 1
