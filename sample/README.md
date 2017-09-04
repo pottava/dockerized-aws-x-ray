@@ -1,10 +1,30 @@
 
 # 1. Try this application locally
 
+Expose AWS credencials as environment variables:
+
+```
+$ export AWS_REGION=
+$ export AWS_ACCESS_KEY_ID=
+$ export AWS_SECRET_ACCESS_KEY=
+```
+
+Install `golang/deps`:
+
+```
+$ brew install dep
+$ brew upgrade dep
+
+or
+
+$ go get -u github.com/golang/dep/cmd/dep
+```
+
 Run with Docker Compose:
 
 ```
-$ cd path/to/this/sample-dir
+$ git clone https://github.com/pottava/dockerized-aws-x-ray.git
+$ cd dockerized-aws-x-ray/sample
 $ pushd src
 $ dep ensure
 $ popd
@@ -21,9 +41,9 @@ $ open http://localhost:9000
 # 2. Build as a docker image
 
 ```
-$ AWS_ACCOUNT_ID=$( aws sts get-caller-identity --query "Account" --output text )
-$ REPOSITORY=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/xray-sample
-$ docker build -t ${REPOSITORY} .
+$ aws_account_id=$( aws sts get-caller-identity --query "Account" --output text )
+$ repository=${aws_account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/xray-sample
+$ docker build -t ${repository} .
 ```
 
 Push it to ECR.
@@ -31,15 +51,22 @@ Push it to ECR.
 ```
 $ aws ecr create-repository --repository-name xray-sample
 $ aws ecr get-login --no-include-email | sh
-$ docker push ${REPOSITORY}
+$ docker push ${repository}
 ```
 
 
 # 3. Provision the sample stack
 
+Choose your stack name & expose your keypair name:
+
 ```
 $ STACK_NAME=
 $ YOUR_KEYPAIR_NAME=
+```
+
+Create a stack:
+
+```
 $ aws cloudformation create-stack --stack-name ${STACK_NAME} \
   --template-body file://cfn/ecs.yaml \
   --parameters ParameterKey=InstanceType,ParameterValue=t2.small \
@@ -75,7 +102,7 @@ $ cat << EOF > container-definitions.json
 [
   {
     "name": "web",
-    "image": "${REPOSITORY}",
+    "image": "${repository}",
     "portMappings": [{"protocol": "tcp", "containerPort": 80, "hostPort": 0}],
     "environment": [
       {"name": "AWS_REGION", "value": "ap-northeast-1"},
