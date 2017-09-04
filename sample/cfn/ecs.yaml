@@ -428,10 +428,6 @@ Resources:
                   - /etc/cfn/hooks.d/cfn-auto-reloader.conf
 
 Outputs:
-  Cluster:
-    Description: An ECS cluster name
-    Value: !Ref SampleCluster
-
   Task:
     Description: An ECS task definition
     Value: !Ref SampleTask

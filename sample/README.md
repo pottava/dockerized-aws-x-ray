@@ -69,7 +69,8 @@ Update the task definition:
 $ task_name=$( aws cloudformation describe-stacks --stack-name ${STACK_NAME} \
     --query 'Stacks[0].Outputs[?(OutputKey==`Task`)].OutputValue' \
     --output text )
-$ old=$( aws ecs describe-task-definition --task-definition ${task_name} )
+$ old=$( aws ecs describe-task-definition --task-definition ${task_name} \
+    --query 'taskDefinition' )
 $ cat << EOF > container-definitions.json
 [
   {
@@ -87,7 +88,7 @@ $ cat << EOF > container-definitions.json
       "gen-errors:err",
       "mysql:db"
     ],
-    "logConfiguration": $(echo ${old} | jq '.taskDefinition.containerDefinitions[0].logConfiguration'),
+    "logConfiguration": $(echo ${old} | jq '.containerDefinitions[0].logConfiguration'),
     "memoryReservation": 32,
     "memory": 100,
     "cpu": 10,
@@ -96,7 +97,7 @@ $ cat << EOF > container-definitions.json
   {
     "name": "xray-daemon",
     "image": "pottava/xray:1.0",
-    "logConfiguration": $(echo ${old} | jq '.taskDefinition.containerDefinitions[0].logConfiguration'),
+    "logConfiguration": $(echo ${old} | jq '.containerDefinitions[0].logConfiguration'),
     "memoryReservation": 32,
     "memory": 100,
     "cpu": 10,
@@ -105,7 +106,7 @@ $ cat << EOF > container-definitions.json
   {
     "name": "gen-errors",
     "image": "pottava/http-sw:1.0",
-    "logConfiguration": $(echo ${old} | jq '.taskDefinition.containerDefinitions[0].logConfiguration'),
+    "logConfiguration": $(echo ${old} | jq '.containerDefinitions[0].logConfiguration'),
     "memoryReservation": 32,
     "memory": 100,
     "cpu": 10,
@@ -120,7 +121,7 @@ $ cat << EOF > container-definitions.json
       {"name": "MYSQL_PASSWORD", "value": "pass"},
       {"name": "MYSQL_DATABASE", "value": "test"}
     ],
-    "logConfiguration": $(echo ${old} | jq '.taskDefinition.containerDefinitions[0].logConfiguration'),
+    "logConfiguration": $(echo ${old} | jq '.containerDefinitions[0].logConfiguration'),
     "memoryReservation": 256,
     "memory": 768,
     "cpu": 100,
@@ -129,7 +130,7 @@ $ cat << EOF > container-definitions.json
 ]
 EOF
 $ aws ecs register-task-definition --family ${STACK_NAME} \
-    --task-role-arn $(echo ${old_task} | jq -r '.taskDefinition.taskRoleArn') \
+    --task-role-arn $(echo ${old} | jq -r '.taskRoleArn') \
     --container-definitions file://container-definitions.json
 ```
 
