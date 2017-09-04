@@ -9,25 +9,14 @@ $ export AWS_ACCESS_KEY_ID=
 $ export AWS_SECRET_ACCESS_KEY=
 ```
 
-Install `golang/deps`:
-
-```
-$ brew install dep
-$ brew upgrade dep
-
-or
-
-$ go get -u github.com/golang/dep/cmd/dep
-```
-
 Run with Docker Compose:
 
 ```
 $ git clone https://github.com/pottava/dockerized-aws-x-ray.git
+$ docker run --rm -v $(pwd):/go/src/github.com/pottava \
+    -w /go/src/github.com/pottava/dockerized-aws-x-ray/sample/src \
+    pottava/dep:0.3 ensure
 $ cd dockerized-aws-x-ray/sample
-$ pushd src
-$ dep ensure
-$ popd
 $ docker-compose up
 ```
 
