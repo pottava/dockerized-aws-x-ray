@@ -19,6 +19,8 @@ RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme
        glibc-bin-${GLIBC_VERSION}.apk glibc-i18n-${GLIBC_VERSION}.apk \
     && /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib \
     && /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8 \
+    && rm -rf glibc-${GLIBC_VERSION}.apk \
+       glibc-bin-${GLIBC_VERSION}.apk glibc-i18n-${GLIBC_VERSION}.apk \
 
     # Install AWS X-Ray daemon
     && cd /usr/lib \
