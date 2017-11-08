@@ -1,8 +1,8 @@
 # AWS X-Ray v2.0
 #
 # docker run --rm pottava/xray:2.0 --help
-# docker run -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY --rm -p 2000:2000 \
-#     pottava/xray:2.0 --bind 0.0.0.0:2000 --region ${AWS_REGION} --local-mode
+# docker run --name xray -d -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
+#     -p 2000:2000 pottava/xray:2.0 --region ${AWS_REGION} --local-mode
 
 FROM alpine:3.6
 
