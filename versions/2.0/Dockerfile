@@ -31,6 +31,7 @@ RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme
     && unzip -q ${xray_zip} \
     && rm -rf ${xray_zip} ${xray_zip}.sig \
     && ln -s /usr/lib/xray /usr/bin/ \
+    && ln -sf /dev/stdout /var/log/xray-daemon.log \
 
     && apk del --purge -r build-dependencies
 

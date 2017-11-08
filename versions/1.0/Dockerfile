@@ -4,7 +4,7 @@ RUN apk --no-cache add ca-certificates
 RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip \
 
     # Install GNU libc
-    && GLIBC_VERSION=2.25-r0 \
+    && GLIBC_VERSION=2.26-r0 \
     && GLIBC_DL_URL="https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}" \
     && curl --location --silent --show-error -O ${GLIBC_DL_URL}/glibc-${GLIBC_VERSION}.apk \
     && curl --location --silent --show-error -O ${GLIBC_DL_URL}/glibc-bin-${GLIBC_VERSION}.apk \
@@ -20,6 +20,7 @@ RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip \
     && unzip -q aws-xray-daemon-linux-1.x.zip \
     && rm -rf aws-xray-daemon-linux-1.x.zip \
     && ln -s /usr/lib/xray /usr/bin/ \
+    && ln -sf /dev/stdout /var/log/xray-daemon.log \
 
     && apk del --purge -r build-dependencies
 
