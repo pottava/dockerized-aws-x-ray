@@ -112,7 +112,7 @@ $ cat << EOF > container-definitions.json
   },
   {
     "name": "xray-daemon",
-    "image": "pottava/xray:1.0",
+    "image": "pottava/xray:2.0",
     "logConfiguration": $(echo ${old} | jq '.containerDefinitions[0].logConfiguration'),
     "memoryReservation": 32,
     "memory": 100,

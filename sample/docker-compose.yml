@@ -19,10 +19,9 @@ services:
     container_name: app
 
   xray:
-    image: pottava/xray:1.0
-    command: --local-mode --bind 0.0.0.0:2000
+    image: pottava/xray:2.0
+    command: --region ${AWS_REGION} --local-mode
     environment:
-      - AWS_REGION
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
     container_name: xray
