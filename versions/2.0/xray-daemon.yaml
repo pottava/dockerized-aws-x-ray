@@ -1,9 +1,10 @@
+Version: 1
 Socket:
-  UDPAddress: "0.0.0.0:2000"
-Region: "us-west-2"
+  UDPAddress: 0.0.0.0:2000
+Region: us-west-2
 TotalBufferSizeMB: 0
 Logging:
-  LogLevel: "warn"
-  LogPath: "/var/log/xray-daemon.log"
+  LogLevel: warn
+  LogPath: /var/log/xray-daemon.log
   LogRotation: true
 LocalMode: false
