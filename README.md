@@ -16,7 +16,7 @@ $ docker run --rm pottava/xray:2.0 --help
 
 ```
 $ docker run --name xray -d -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
-     -p 2000:2000 pottava/xray:2.0 --region ${AWS_REGION} --local-mode
+     -p 2000:2000/udp pottava/xray:2.0 --region ${AWS_REGION} --local-mode
 ```
 
 * with Docker-Compose:

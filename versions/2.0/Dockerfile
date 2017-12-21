@@ -2,9 +2,11 @@
 #
 # docker run --rm pottava/xray:2.0 --help
 # docker run --name xray -d -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
-#     -p 2000:2000 pottava/xray:2.0 --region ${AWS_REGION} --local-mode
+#     -p 2000:2000/udp pottava/xray:2.0 --region ${AWS_REGION} --local-mode
 
 FROM alpine:3.6
+
+ENV XRAY_VERSION=2.0.0
 
 RUN apk --no-cache add ca-certificates
 RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme \
@@ -25,7 +27,7 @@ RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme
     # Install AWS X-Ray daemon
     && cd /usr/lib \
     && xray_url=https://s3.dualstack.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon \
-    && xray_zip=aws-xray-daemon-linux-2.x.zip \
+    && xray_zip=aws-xray-daemon-linux-${XRAY_VERSION}.zip \
     && curl -O --location --silent --show-error ${xray_url}/${xray_zip} \
     && curl -O --location --silent --show-error ${xray_url}/${xray_zip}.sig \
     && curl --location --silent --show-error ${xray_url}/aws-xray.gpg | gpg --import \
