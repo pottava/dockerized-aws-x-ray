@@ -41,7 +41,7 @@ RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme
 
 ADD xray-daemon.yaml /
 
-EXPOSE 2000
+EXPOSE 2000/udp
 
 ENTRYPOINT ["xray", "--config", "/xray-daemon.yaml"]
 CMD ["--region", "us-west-2"]
