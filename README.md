@@ -1,3 +1,8 @@
+# Dockerized AWS X-Ray Daemon
+
+[![pottava/xray](http://dockeri.co/image/pottava/xray)](https://hub.docker.com/r/pottava/xray/)
+
+
 Supported tags and respective `Dockerfile` links:
 
 ・latest ([versions/2.0/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/2.0/Dockerfile))  
