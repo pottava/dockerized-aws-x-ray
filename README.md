@@ -5,7 +5,8 @@
 
 Supported tags and respective `Dockerfile` links:
 
-・latest ([versions/2.0/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/2.0/Dockerfile))  
+・latest ([versions/2.1/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/2.1/Dockerfile))  
+・2.1 ([versions/2.1/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/2.1/Dockerfile))  
 ・2.0 ([versions/2.0/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/2.0/Dockerfile))  
 ・1.0 ([versions/1.0/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/1.0/Dockerfile))  
 
@@ -13,15 +14,15 @@ Supported tags and respective `Dockerfile` links:
 ## Usage
 
 ```
-$ docker run --rm pottava/xray:2.0 --version
-$ docker run --rm pottava/xray:2.0 --help
+$ docker run --rm pottava/xray:2.1 --version
+$ docker run --rm pottava/xray:2.1 --help
 ```
 
 ### Local
 
 ```
 $ docker run --name xray -d -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
-     -p 2000:2000/udp pottava/xray:2.0 --region ${AWS_REGION} --local-mode
+     -p 2000:2000/udp pottava/xray:2.1 --region ${AWS_REGION} --local-mode
 ```
 
 * with Docker-Compose:
@@ -37,7 +38,7 @@ services:
     container_name: app
 
   xray:
-    image: pottava/xray:2.0
+    image: pottava/xray:2.1
     command: --region ${AWS_REGION} --local-mode
     environment:
       - AWS_ACCESS_KEY_ID
@@ -69,7 +70,7 @@ TaskDef:
         MemoryReservation: 32
         Essential: true
       - Name: xray-daemon
-        Image: pottava/xray:2.0
+        Image: pottava/xray:2.1
         Cpu: 10
         Memory: 100
         MemoryReservation: 32
@@ -104,7 +105,7 @@ TaskDef:
   },
   {
     "name": "xray-daemon",
-    "image": "pottava/xray:2.0",
+    "image": "pottava/xray:2.1",
     "cpu": 10,
     "memory": 100,
     "memoryReservation": 32,
