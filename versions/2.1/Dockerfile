@@ -10,7 +10,6 @@ ENV XRAY_VERSION=2.1.3
 
 RUN apk --no-cache add ca-certificates
 RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme \
-    && : # Install GNU libc \
     && GLIBC_VERSION=2.28-r0 \
     && GLIBC_DL_URL="https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}" \
     && curl --location --silent --show-error -O ${GLIBC_DL_URL}/glibc-${GLIBC_VERSION}.apk \
@@ -22,7 +21,6 @@ RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme
     && /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8 \
     && rm -rf glibc-${GLIBC_VERSION}.apk \
        glibc-bin-${GLIBC_VERSION}.apk glibc-i18n-${GLIBC_VERSION}.apk \
-    && : # Install AWS X-Ray daemon \
     && cd /usr/lib \
     && xray_url=https://s3.dualstack.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon \
     && xray_zip=aws-xray-daemon-linux-${XRAY_VERSION}.zip \
