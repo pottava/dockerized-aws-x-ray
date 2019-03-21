@@ -16,7 +16,7 @@ RUN git checkout "V${XRAY_VERSION}"
 WORKDIR /go/src/github.com/aws/aws-xray-daemon/daemon
 RUN go build -ldflags "-s -w" -o /xray
 
-FROM alpine:3.9 AS prod
+FROM alpine:3.9
 # hadolint ignore=DL3022
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /xray /usr/bin/

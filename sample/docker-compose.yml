@@ -19,7 +19,7 @@ services:
     container_name: app
 
   xray:
-    image: test
+    image: pottava/xray:3.0
     command: --region ap-northeast-1 --local-mode --log-level debug
     environment:
       - AWS_ACCESS_KEY_ID
