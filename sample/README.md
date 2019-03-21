@@ -13,10 +13,10 @@ Run with Docker Compose:
 
 ```
 $ git clone https://github.com/pottava/dockerized-aws-x-ray.git
-$ docker run --rm -v $(pwd):/go/src/github.com/pottava \
-    -w /go/src/github.com/pottava/dockerized-aws-x-ray/sample/src \
-    pottava/dep:0.3 ensure
 $ cd dockerized-aws-x-ray/sample
+$ docker run --rm -v "$(pwd)":/go/src/github.com/pottava/dockerized-aws-x-ray/sample \
+    -w /go/src/github.com/pottava/dockerized-aws-x-ray/sample/src \
+    supinf/go-dep:0.5 ensure
 $ docker-compose up
 ```
 
@@ -112,7 +112,7 @@ $ cat << EOF > container-definitions.json
   },
   {
     "name": "xray-daemon",
-    "image": "pottava/xray:2.0",
+    "image": "pottava/xray:3.0",
     "logConfiguration": $(echo ${old} | jq '.containerDefinitions[0].logConfiguration'),
     "memoryReservation": 32,
     "memory": 100,
