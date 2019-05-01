@@ -7,11 +7,11 @@
 FROM alpine:3.9 AS certs
 RUN apk --no-cache add "ca-certificates=20190108-r0"
 
-FROM golang:1.12.1-alpine3.9 AS build
+FROM golang:1.12.4-alpine3.9 AS build
 RUN apk --no-cache add "git=2.20.1-r0"
 RUN go get -u github.com/aws/aws-xray-daemon/...
 WORKDIR /go/src/github.com/aws/aws-xray-daemon
-ENV XRAY_VERSION=3.0.0
+ENV XRAY_VERSION=3.0.1
 RUN git checkout "V${XRAY_VERSION}"
 WORKDIR /go/src/github.com/aws/aws-xray-daemon/daemon
 RUN go build -ldflags "-s -w" -o /xray
