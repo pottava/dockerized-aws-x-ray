@@ -12,7 +12,7 @@ RUN apk --no-cache add "git=2.20.1-r0"
 RUN go get -u github.com/aws/aws-xray-daemon/...
 WORKDIR /go/src/github.com/aws/aws-xray-daemon
 ENV XRAY_VERSION=3.0.1
-RUN git checkout "V${XRAY_VERSION}"
+RUN git checkout "v${XRAY_VERSION}"
 WORKDIR /go/src/github.com/aws/aws-xray-daemon/daemon
 RUN go build -ldflags "-s -w" -o /xray
 
