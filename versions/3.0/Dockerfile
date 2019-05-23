@@ -20,6 +20,7 @@ FROM alpine:3.9
 # hadolint ignore=DL3022
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /xray /usr/bin/
+RUN chmod +x /usr/bin/xray
 RUN ln -sf /dev/stdout /var/log/xray-daemon.log
 EXPOSE 2000/udp
 COPY xray-daemon.yaml /

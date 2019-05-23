@@ -4,13 +4,13 @@
 # docker run --name xray -d -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
 #     -p 2000:2000/udp pottava/xray:2.1 --region ${AWS_REGION} --local-mode
 
-FROM alpine:3.8
+FROM alpine:3.9
 
 ENV XRAY_VERSION=2.1.3
 
 RUN apk --no-cache add ca-certificates
 RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme \
-    && GLIBC_VERSION=2.28-r0 \
+    && GLIBC_VERSION=2.29-r0 \
     && GLIBC_DL_URL="https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}" \
     && curl --location --silent --show-error -O ${GLIBC_DL_URL}/glibc-${GLIBC_VERSION}.apk \
     && curl --location --silent --show-error -O ${GLIBC_DL_URL}/glibc-bin-${GLIBC_VERSION}.apk \
@@ -32,6 +32,7 @@ RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip gpgme
     && rm -rf ${xray_zip} ${xray_zip}.sig \
     && ln -s /usr/lib/xray /usr/bin/ \
     && ln -sf /dev/stdout /var/log/xray-daemon.log \
+    && chmod +x /usr/bin/xray \
     && apk del --purge -r build-dependencies
 
 ADD xray-daemon.yaml /
