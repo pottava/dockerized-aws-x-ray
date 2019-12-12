@@ -4,18 +4,17 @@
 
 Supported tags and respective `Dockerfile` links:
 
-・latest ([versions/3.1/amd/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/3.1/amd/Dockerfile))  
-・3.1 ([versions/3.1/amd/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/3.1/amd/Dockerfile))  
-・3.1-arm ([versions/3.1/arm/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/3.1/arm/Dockerfile))  
-・3.0 ([versions/3.0/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/3.0/Dockerfile))  
+・latest ([versions/3.2/amd/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/3.2/amd/Dockerfile))  
+・3.2 ([versions/3.2/amd/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/3.2/amd/Dockerfile))  
+・3.2-arm ([versions/3.2/arm/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/3.2/arm/Dockerfile))  
 ・2.1 ([versions/2.1/Dockerfile](https://github.com/pottava/dockerized-aws-x-ray/blob/master/versions/2.1/Dockerfile))  
 
 ## Usage
 
 ```sh
-$ docker run --rm pottava/xray:3.1 --version
-AWS X-Ray daemon version: 3.1.0
-$ docker run --rm pottava/xray:3.1 --help
+$ docker run --rm pottava/xray:3.2 --version
+AWS X-Ray daemon version: 3.2.0
+$ docker run --rm pottava/xray:3.2 --help
 Usage: X-Ray [options]
   -a --resource-arn Amazon Resource Name (ARN) of the AWS resource running the daemon.
   ..
@@ -27,13 +26,13 @@ Usage: X-Ray [options]
 $ docker run --name xray -d \
     -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
     -p 2000:2000/udp -p 2000:2000/tcp \
-    pottava/xray:3.1 --region ${AWS_REGION} --local-mode
+    pottava/xray:3.2 --region ${AWS_REGION} --local-mode
 ```
 
 * with Docker-Compose:
 
 ```yaml
-version: "2.1"
+version: "2.4"
 services:
   app:
     image: <your-some-application>
@@ -43,7 +42,7 @@ services:
       - AWS_XRAY_DAEMON_ADDRESS=xray:2000
     container_name: app
   xray:
-    image: pottava/xray:3.1
+    image: pottava/xray:3.2
     command: --region ${AWS_REGION} --local-mode
     environment:
       - AWS_ACCESS_KEY_ID
@@ -75,7 +74,7 @@ TaskDef:
         MemoryReservation: 32
         Essential: true
       - Name: xray-daemon
-        Image: pottava/xray:3.1
+        Image: pottava/xray:3.2
         Cpu: 10
         Memory: 100
         MemoryReservation: 32
@@ -110,7 +109,7 @@ TaskDef:
   },
   {
     "name": "xray-daemon",
-    "image": "pottava/xray:3.1",
+    "image": "pottava/xray:3.2",
     "cpu": 10,
     "memory": 100,
     "memoryReservation": 32,
