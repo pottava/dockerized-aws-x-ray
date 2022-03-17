@@ -4,7 +4,7 @@
 # docker run --name xray -d -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
 #     -p 2000:2000/udp pottava/xray:2.0 --region ${AWS_REGION} --local-mode
 
-FROM alpine:3.9
+FROM alpine:3.15
 
 ENV XRAY_VERSION=2.0.0
 
