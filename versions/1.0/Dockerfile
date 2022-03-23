@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.14.4
 
 RUN apk --no-cache add ca-certificates
 RUN apk --no-cache add --virtual build-dependencies bash curl libgcc unzip \
